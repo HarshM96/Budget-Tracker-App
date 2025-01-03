@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page - Budget Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo-container">
+      <img src="images/hero.jpeg" alt="Budget Tracker Logo" class="logo" />
+      <h1>Budget Tracker</h1>
+    </div>
+    <div class="login-card">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required placeholder="Enter your email" />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required placeholder="Enter your password" />
+        </div>
+
+        <button type="submit" class="btn-login">Login</button>
+
+        <div class="footer-links">
+          <span>Don't have an account?</span> <a href="#">Sign Up</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    const form = document.getElementById('loginForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+      if (result.message === 'Login successful!') {
+        sessionStorage.setItem('authenticated', 'true'); // Store session info
+        window.location.href = '/dashboard.html'; // Redirect to dashboard
+      } else {
+        alert(result.message);
+      }
+    });
+  </script>
+</body>
+</html>
+
